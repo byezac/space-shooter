@@ -451,16 +451,7 @@ const canvas = document.getElementById('gameCanvas');
             });
         }
 
-        // Adicionar função para limpar scores
-        function clearHighScores() {
-            if (confirm('Tem certeza que deseja limpar todo o ranking?')) {
-                highScores = [];
-                localStorage.removeItem('highScores');
-                updateHighScoresTable();
-            }
-        }
-
-        // Modifique a função startNewGame()
+        // Modificar a função startNewGame()
         function startNewGame() {
             const nameInput = document.getElementById('playerName');
             playerName = nameInput.value.trim();
@@ -520,7 +511,6 @@ const canvas = document.getElementById('gameCanvas');
             loadHighScores();
             
             document.getElementById('startButton').addEventListener('click', startNewGame);
-            document.getElementById('clearScores').addEventListener('click', clearHighScores);
             document.getElementById('gameCanvas').style.display = 'none';
         });
 

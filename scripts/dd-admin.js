@@ -26,13 +26,11 @@ function login() {
 
 function loadRatings() {
     const ratings = JSON.parse(localStorage.getItem('gameRatings')) || [];
+    const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
     
     if (ratings.length > 0) {
         const average = ratings.reduce((sum, r) => sum + parseInt(r.rating), 0) / ratings.length;
-        const highestScore = Math.max(...ratings.map(r => r.score));
-        
-        const ratingDistribution = Array(5).fill(0);
-        ratings.forEach(r => ratingDistribution[r.rating - 1]++);
+        const highestScore = Math.max(...highScores.map(score => score.score), 0);
         
         document.getElementById('totalRatings').textContent = ratings.length;
         document.getElementById('averageRating').textContent = `${average.toFixed(1)} ★`;
@@ -42,23 +40,56 @@ function loadRatings() {
     const ratingsList = document.getElementById('ratingsList');
     ratingsList.innerHTML = '';
 
+    const highScoresSection = `
+        <div class="high-scores-section">
+            <h2>Ranking de Jogadores</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Posição</th>
+                        <th>Nome</th>
+                        <th>Pontos</th>
+                        <th>Level</th>
+                        <th>Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${highScores.map((score, index) => `
+                        <tr>
+                            <td>${index + 1}º</td>
+                            <td>${score.name}</td>
+                            <td>${score.score}</td>
+                            <td>${score.level}</td>
+                            <td>${score.time}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+            <div class="button-group">
+                <button class="clear-button" onclick="clearHighScores()">Limpar Ranking</button>
+            </div>
+        </div>
+    `;
+
     if (ratings.length === 0) {
-        ratingsList.innerHTML = '<div class="rating-card">Nenhuma avaliação encontrada.</div>';
+        ratingsList.innerHTML = highScoresSection + '<div class="rating-card">Nenhuma avaliação encontrada.</div>';
         return;
     }
 
+    let ratingsHTML = '';
     ratings.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(rating => {
-        const card = document.createElement('div');
-        card.className = 'rating-card';
-        card.innerHTML = `
-            <h3>${rating.player}</h3>
-            <div class="rating-stars">${'★'.repeat(rating.rating)}${'☆'.repeat(5-rating.rating)}</div>
-            <p>Pontuação: ${rating.score} | Nível: ${rating.level}</p>
-            ${rating.feedback ? `<div class="rating-feedback">"${rating.feedback}"</div>` : ''}
-            <div class="rating-date">${rating.date}</div>
+        ratingsHTML += `
+            <div class="rating-card">
+                <h3>${rating.player}</h3>
+                <div class="rating-stars">${'★'.repeat(rating.rating)}${'☆'.repeat(5-rating.rating)}</div>
+                <p>Pontuação: ${rating.score} | Nível: ${rating.level}</p>
+                ${rating.feedback ? `<div class="rating-feedback">"${rating.feedback}"</div>` : ''}
+                <div class="rating-date">${rating.date}</div>
+            </div>
         `;
-        ratingsList.appendChild(card);
     });
+
+    ratingsList.innerHTML = highScoresSection + ratingsHTML;
 }
 
 function exportToExcel() {
@@ -126,5 +157,13 @@ function clearRatings() {
         localStorage.removeItem('gameRatings');
         loadRatings(); // Recarrega a página para mostrar que está vazia
         alert('Todas as avaliações foram removidas com sucesso!');
+    }
+}
+
+function clearHighScores() {
+    if (confirm('Tem certeza que deseja limpar todo o ranking? Esta ação não pode ser desfeita.')) {
+        localStorage.removeItem('highScores');
+        loadRatings(); // Recarregar a página para atualizar as visualizações
+        alert('Ranking limpo com sucesso!');
     }
 }

@@ -250,3 +250,53 @@ button:hover {
     object-fit: contain;
     display: block;
 }
+
+.high-scores-section {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.high-scores-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    color: white;
+}
+
+.high-scores-section th,
+.high-scores-section td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.high-scores-section th {
+    background-color: rgba(255, 255, 255, 0.1);
+    font-weight: bold;
+}
+
+.high-scores-section tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.button-group {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.clear-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.clear-button:hover {
+    background-color: #c82333;
+}
