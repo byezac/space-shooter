@@ -797,7 +797,7 @@ const canvas = document.getElementById('gameCanvas');
         // Modifique a função que mostra o botão de avaliações
         function showViewRatingsButton() {
             const password = prompt("Digite a senha de administrador:");
-            if (password === ADMIN_PASSWORD) {
+            if (password && password === ADMIN_PASSWORD) {
                 showRatingsScreen();
             } else {
                 alert("Senha incorreta!");

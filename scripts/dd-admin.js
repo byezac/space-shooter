@@ -1,4 +1,8 @@
-const ADMIN_PASSWORD = "zac@2024";
+if (!localStorage.getItem('adminPassword')) {
+    localStorage.setItem('adminPassword', 'zac@2024');
+}
+
+const ADMIN_PASSWORD = localStorage.getItem('adminPassword');
 
 document.addEventListener('DOMContentLoaded', function() {
     const passwordInput = document.getElementById('adminPassword');
@@ -11,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function login() {
     const password = document.getElementById('adminPassword').value;
-    if (password === ADMIN_PASSWORD) {
+    if (password && password === ADMIN_PASSWORD) {
         document.getElementById('loginForm').style.display = 'none';
         document.getElementById('ratingsContainer').style.display = 'block';
         loadRatings();
